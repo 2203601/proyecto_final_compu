@@ -3,7 +3,7 @@
 
 int menu (void);
 void autof(void);
-void choque(voide);
+void choquef(void);
 void disp_binary(int);
 void no_yet (void);
 int leds (int num);
@@ -65,6 +65,10 @@ int menu(void){
         printf("\n 5) salir \n");
         printf("Elija su opcion: ");
         scanf("%d", &s);   
+
+        if (s<1 || s>5){
+            printf("\n Elija una opcion entre 1 y 5");
+        }
     }while (s<1 || s>5);
     
     return s;
