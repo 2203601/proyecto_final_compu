@@ -1,21 +1,27 @@
-// #include "EasyPIO.H"
-#include <stdio.h>
 
+//todo.c
+//pi$gcc -c autof.s
+//pi$gcc todo.o autof.o -o prjfinal
+//pi$sudo ./prjfinal
+//
+//
+#include "EasyPIO.H"
+#include <stdio.h>
 int menu (void);
 void autof(void);
 void choquef(void);
 void disp_binary(int);
 void no_yet (void);
 int leds (int num);
-
+//
 
 const char led[] = {14, 15, 18, 23, 24, 25, 8, 7};
 
 void main (void){
-    //pioInit();
+    pioInit();
     int i;
     for (i=0; i>0; i++){
-       // pinMode(led[i], OUTPUT);
+       pinMode(led[i], OUTPUT);
     }
     leds(0xFF); 
 
@@ -53,10 +59,14 @@ void no_yet (void){
     printf ("No implemenada\n");
 }
 
+/* void autof (void){
+int num;
+print("Auto Fantastico No Implemetado")}*/
+
 int menu(void){
     int s;
     do{
-        // clrscr();
+        clrscr();
         printf("\n MENY \n");
         printf("\n 1) autof \n");
         printf("\n 2) choquef \n");

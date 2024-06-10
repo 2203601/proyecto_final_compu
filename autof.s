@@ -1,4 +1,6 @@
 // autof.s 
+// 10 de Junio 2024
+// Arqui I UCC
 
 .text
 
