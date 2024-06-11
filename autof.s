@@ -10,11 +10,11 @@ autof:
         PUSH (R4, R5, R6, LR)
         MDV R4, #15
         LDR R5, #array // load base address of array into R5
-loop:   LDRB R5, [R5], #1
-        MOV R0, R5
+loop:   LDRB R6, [R5], #1
+        MOV R0, R6
         BL disp_binary 
         MVN R0, R6 // interface outputs are active by low
-        BL lods
+        BL leds
         MDV R0, #300
         BL delayMillis
         SUBS R4, R4, #1

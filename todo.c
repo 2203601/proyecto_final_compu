@@ -10,6 +10,8 @@
 int menu (void);
 void autof(void);
 void choquef(void);
+void tennis(void);
+void conejos(void);
 void disp_binary(int);
 void no_yet (void);
 int leds (int num);
@@ -39,11 +41,11 @@ void main (void){
             break;
         
         case 3:
-             no_yet();
+            corazones()
             break;
 
         case 4:
-             no_yet();
+             conejos();
             break;
 
         case 5:
@@ -70,8 +72,8 @@ int menu(void){
         printf("\n MENY \n");
         printf("\n 1) autof \n");
         printf("\n 2) choquef \n");
-        printf("\n 3) opcion3 \n");
-        printf("\n 4) opcion4 \n");
+        printf("\n 3) corazones \n");
+        printf("\n 4) conejos \n");
         printf("\n 5) salir \n");
         printf("Elija su opcion: ");
         scanf("%d", &s);   
@@ -96,7 +98,21 @@ void choquef (void){
     }
 }
 
-void disp_binary(int i){
+
+
+void tennis (void){
+    printf("PingPong:  \n");
+    char a;
+    unsigned char tabla[7] = {0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42};
+    
+    for (int i=0; i<7; i++){
+        disp_binary(tabla[i]);
+        leds(-tabla[i]);
+        delayMillis(300);
+    }
+}
+
+void disp_binary(int i){ // muestra en pantalla
     int t;
     for(t=128; t>0; t=t/2)
         if(i&t) printf("*");
