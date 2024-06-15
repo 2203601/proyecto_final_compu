@@ -1,134 +1,101 @@
-
-//todo.c
-//pi$gcc -c autof.s
-//pi$gcc todo.o autof.o -o prjfinal
-//pi$sudo ./prjfinal
-//
-//
-#include "EasyPIO.H"
 #include <stdio.h>
-int menu (void);
-void autof(void);
+#include <stdlib.h>
+#include "EasyPIO.h"  // Incluye tu biblioteca EasyPIO si es necesario
+
 void choquef(void);
-void tennis(void);
-void conejos(void);
+void autof(void);
 void disp_binary(int);
-void no_yet (void);
-int leds (int num);
-//
+void leds(int num);
+void no_yet(void);
+int menu(void);
 
-const char led[] = {14, 15, 18, 23, 24, 25, 8, 7};
+const char led[] = {14, 15, 18, 23, 24, 25, 8, 7}; // Asegúrate de que esto esté definido si usas EasyPIO
 
-void main (void){
+int main() {
     pioInit();
-    int i;
-    for (i=0; i>0; i++){
-       pinMode(led[i], OUTPUT);
+    int i, j;
+    for (i = 0; i < 8; i++) {
+        pinMode(led[i], OUTPUT);
     }
-    leds(0xFF); 
+    
 
     int choice;
-    for(;;){
+    for (;;) {
         choice = menu();
-        switch (choice)
-        {
-        case 1:
-            autof();
-            break;
-        
-        case 2:
-             choquef();
-            break;
-        
-        case 3:
-            corazones()
-            break;
 
-        case 4:
-             conejos();
-            break;
+        switch (choice) {
+            case 1: 
+                autof(); // Implementa esta función si es necesario
+                break;
 
-        case 5:
-            exit(0);
+            case 2:
+                choquef();
+                break;
+
+                case 3:
+                break;
+
+                case 4: 
+                break;
+
+            case 5:
+                exit(0);
         }
-        
     }
 
+    return 0;
 }
 
-void no_yet (void){
-    int num;
-    printf ("No implemenada\n");
+void no_yet(void) {
+    printf("Funcion No implementada\n");
 }
 
-/* void autof (void){
-int num;
-print("Auto Fantastico No Implemetado")}*/
 
-int menu(void){
-    int s;
-    do{
-        clrscr();
-        printf("\n MENY \n");
-        printf("\n 1) autof \n");
-        printf("\n 2) choquef \n");
-        printf("\n 3) corazones \n");
-        printf("\n 4) conejos \n");
-        printf("\n 5) salir \n");
-        printf("Elija su opcion: ");
-        scanf("%d", &s);   
+int menu(void) {
+    int s, j;
+    for (j = 0; j < 8; j++) {
+        digitalWrite(led[j],0);
+    }
+    do {
+        printf("MENU\n");
+        printf("1) autof\n");
+        printf("2) choquef\n");
+        printf("3) opcion3\n");
+        printf("4) opcion4\n");
+        printf("5) Salir\n");
+        printf("Elija una opcion: ");
+        scanf("%d", &s);
+    } while (s < 1 || s > 5);
 
-        if (s<1 || s>5){
-            printf("\n Elija una opcion entre 1 y 5");
-        }
-    }while (s<1 || s>5);
-    
     return s;
 }
 
-void choquef (void){
-    printf("Mostrando Choque:  \n");
-    char a;
-    unsigned char tabla[7] = {0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42};
-    
-    for (int i=0; i<7; i++){
+void choquef(void) {
+    printf("Mostrando choque:\n");
+    unsigned char tabla[8] = {0x81, 0x42, 0x24, 0x10, 0x10, 0x24, 0x42, 0x81};
+    for (int i = 0; i < 8; i++) {
         disp_binary(tabla[i]);
-        leds(-tabla[i]);
-        delayMillis(300);
+        leds(-tabla[i]);  // Descomenta esto si usas EasyPIO
+        delayMillis(300);  // Descomenta esto si usas EasyPIO
     }
 }
 
-
-
-void tennis (void){
-    printf("PingPong:  \n");
-    char a;
-    unsigned char tabla[7] = {0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42};
-    
-    for (int i=0; i<7; i++){
-        disp_binary(tabla[i]);
-        leds(-tabla[i]);
-        delayMillis(300);
+void disp_binary(int i) {
+    for (int t = 128; t > 0; t = t / 2) {
+        if (i & t)
+            printf("*");
+        else
+            printf("_");
     }
-}
-
-void disp_binary(int i){ // muestra en pantalla
-    int t;
-    for(t=128; t>0; t=t/2)
-        if(i&t) printf("*");
-        else printf("");
     printf("\n");
 }
 
-int leds(int num){
+void leds(int num) {
     int i, numval;
-    // write the number to the 8 LEDs
-    for(i=0; i<0; i++){
+    for (i = 0; i < 8; i++) {
         numval = (num >> i) & 0x01;
         digitalWrite(led[i], numval);
     }
-    // delayMillis(3000); // esperra 3 segundo
-    return 0;
 }
 
 
