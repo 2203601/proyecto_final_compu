@@ -14,6 +14,7 @@ void leds(int num);
 //void pingpong (void);
 void cowboy(void);
 int menu(void);
+void password(void);
 
 
 
@@ -27,6 +28,8 @@ int main() {
        // pinMode(led[i], OUTPUT);
     }
     
+        printf("Contraseña Correcta!\n");
+
 
 
     int choice;
@@ -59,7 +62,29 @@ int main() {
     return 0;
 }
 
+void password (void){
+    
+   char password1[20]; // Declarar como array de caracteres
+    int ver = 0;
 
+    printf("Ingrese la Contraseña: \n");
+    scanf("%s", password1); // Leer una cadena de caracteres
+
+    do {
+        if (strcmp(password1, "1234") == 0) { // Comparar cadenas con strcmp
+            ver = 1;
+            menu();
+        } else {
+            ver = 0;
+            printf("Contraseña incorrecta. Intente de nuevo\n");
+            printf("Ingrese la Contraseña: \n");
+            scanf("%s", password1); // Leer de nuevo la contraseña
+        }
+    } while (ver != 1);
+    
+    
+    
+}
 
 
 int menu(void) {
