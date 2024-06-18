@@ -11,7 +11,7 @@ void* choquef(void* arg);
 void disp_binary(int i);
 void leds(int num);
 void* autof(void* arg);
-void pingpong(void);
+void* pingpong(void* arg);
 void* cowboy(void* arg);
 int menu(void);
 void password(void);
@@ -28,7 +28,6 @@ size_t DELAY_1 = DEFAULT_DELAY;
 size_t DELAY_2 = DEFAULT_DELAY;
 size_t DELAY_3 = DEFAULT_DELAY;
 size_t DELAY_4 = DEFAULT_DELAY;
-size_t DELAY_5 = DEFAULT_DELAY;
 
 void Delay(size_t a) {
     a = a * 100000;
@@ -89,7 +88,8 @@ int main() {
     for (i = 0; i < 8; i++) {
         pinMode(led[i], OUTPUT);
     }
-
+    
+    password();
     printf("Contraseña Correcta!\n");
 
     int choice;
@@ -100,7 +100,7 @@ int main() {
         switch (choice) {
 
         case 1:
-set_terminal_mode();  // Configurar la terminal
+            set_terminal_mode();  // Configurar la terminal
             DELAY = DELAY_1;
             pthread_create(&threads[0], NULL, KeyListener, NULL);
             pthread_create(&threads[1], NULL, autof, NULL);
@@ -129,12 +129,20 @@ set_terminal_mode();  // Configurar la terminal
             pthread_join(threads[0], NULL);
             pthread_join(threads[1], NULL);
             DELAY_3 = DELAY;
-            reset_terminal_mode();            break;
-
-        case 4:
-            // pingpong();
+            reset_terminal_mode();            
             break;
 
+        case 4:
+             set_terminal_mode();  // Configurar la terminal
+            DELAY = DELAY_4;
+            pthread_create(&threads[0], NULL, KeyListener, NULL);
+            pthread_create(&threads[1], NULL, pingpong, NULL);
+            pthread_join(threads[0], NULL);
+            pthread_join(threads[1], NULL);
+            DELAY_4 = DELAY;
+            reset_terminal_mode();            
+            break;
+            
         case 5:
             reset_terminal_mode();  // Restablecer la configuración de la terminal
             exit(0);
@@ -154,7 +162,6 @@ void password(void) {
     do {
         if (strcmp(password1, "1234") == 0) { // Comparar cadenas con strcmp
             ver = 1;
-            menu();
         }
         else {
             ver = 0;
@@ -178,10 +185,10 @@ int menu(void) {
         QUIT = 0;
         DELAY = DEFAULT_DELAY;
         printf("MENU\n");
-        printf("1) autof\n");
-        printf("2) choquef\n");
-        printf("3) opcion3\n");
-        printf("4) opcion4\n");
+        printf("1) Autof\n");
+        printf("2) Choquef\n");
+        printf("3) Cowboys Duel\n");
+        printf("4) Pingpong\n");
         printf("5) Salir\n");
         printf("Elija una opcion: ");
         scanf("%d", &s);
@@ -192,9 +199,9 @@ int menu(void) {
 
 void* choquef(void* arg) {
     printf("\033[H\033[J"); // Limpia la pantalla de la terminal
+    printf("Mostrando choque:\n");
 
     while (!QUIT) {
-        printf("Mostrando choque:\n");
         unsigned char tabla[8] = { 0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0x81 };
         for (int i = 0; i < 8; i++) {
             if (QUIT) break;
@@ -207,7 +214,8 @@ void* choquef(void* arg) {
 }
 
 void* cowboy(void* arg) {
-    printf("Mostrando choque:\n");
+    printf("\033[H\033[J"); // Limpia la pantalla de la terminal
+    printf("Mostrando cowboy duel:\n");
 
     unsigned char vaqueros[5] = { 0x18, 0x24, 0x42, 0x81, 0x82 }; // caminata de los vaqueros
     unsigned char disparo[6] = { 0x86, 0x8A, 0x92, 0xA2, 0xC2, 0x02 }; // disparo
