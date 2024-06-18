@@ -30,24 +30,28 @@ size_t DELAY_3 = DEFAULT_DELAY;
 size_t DELAY_4 = DEFAULT_DELAY;
 
 void Delay(size_t a) {
-    a = a * 100000;
-    while (a--);
+    a = a * 100000; // para convertirlo en una valor mayor (controlar)
+    while (a--); // retardo
 }
+
+// estructuras para guardar la configuración original y nueva de la terminal
 struct termios old_termios, new_termios;
+
+
 // Configuración de la terminal para no bloquear la entrada del teclado
 void set_terminal_mode()
 {
-    tcgetattr(STDIN_FILENO, &old_termios);
-    new_termios = old_termios;
+    tcgetattr(STDIN_FILENO, &old_termios); // guardar la configuración actual de la terminal en old_termios
+    new_termios = old_termios; // copiar la config en newtermios
     new_termios.c_lflag &= ~ICANON; // Desactiva el modo canónico
     new_termios.c_lflag &= ~ECHO;   // Desactiva el eco
-    tcsetattr(STDIN_FILENO, TCSANOW, &new_termios);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new_termios); //se aplica la config inmediatamente
 }
 
-void reset_terminal_mode()
+void reset_terminal_mode() // restaurar la config original de la terminal
 {
    
-    tcsetattr(STDIN_FILENO, TCSANOW, &old_termios);
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_termios); // restaurar la config original de la terminal
 }
 
 int getch()
@@ -64,17 +68,18 @@ void* KeyListener(void* arg)
 {
     while (!SALIR)
     {
-        int key = getch();
+        int key = getch(); // leer una tecla
+
         if (key == SALIR_KEY)
-            SALIR = 1;
+            SALIR = 1; // establece SALIR a 1 si se presiona q
         else if (key == KEY_UP)
         {
             if (DELAY - DELAY_INTERVAL != 0)
-                DELAY -= DELAY_INTERVAL;
+                DELAY -= DELAY_INTERVAL; // disminuye
         }
         else if (key == KEY_DOWN)
         {
-            DELAY += DELAY_INTERVAL;
+            DELAY += DELAY_INTERVAL; // aumenta
         }
     }
     return NULL;
@@ -101,19 +106,19 @@ int main() {
 
         case 1:
             set_terminal_mode();  // Configurar la terminal
-            DELAY = DELAY_1;
-            pthread_create(&threads[0], NULL, KeyListener, NULL);
-            pthread_create(&threads[1], NULL, autof, NULL);
-            pthread_join(threads[0], NULL);
+            DELAY = DELAY_1; // inicializa el delay
+            pthread_create(&threads[0], NULL, KeyListener, NULL);  // inicializa la variable global DELAY con valor delay_1
+            pthread_create(&threads[1], NULL, autof, NULL); // 
+            pthread_join(threads[0], NULL); // espara la finalizacion
             pthread_join(threads[1], NULL);
-            DELAY_1 = DELAY;
+            DELAY_1 = DELAY; // restaura
             reset_terminal_mode();           
              break;
 
         case 2:
             set_terminal_mode();  // Configurar la terminal
             DELAY = DELAY_2;
-            pthread_create(&threads[0], NULL, KeyListener, NULL);
+            pthread_create(&threads[0], NULL, KeyListener, NULL); // hilo ejecutará  KeyListener
             pthread_create(&threads[1], NULL, choquef, NULL);
             pthread_join(threads[0], NULL);
             pthread_join(threads[1], NULL);
