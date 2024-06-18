@@ -5,7 +5,7 @@
 .text
 
 .global pingpong
-.global QUIT
+.global SALIR
 .global DELAY
 .global DELAY_4
 .global Delay
@@ -16,7 +16,7 @@ pingpong:
        LDR R6, [R11]
        LDR R9, = DELAY
        STR R6, [R9]
-       LDR R10, = QUIT
+       LDR R10, = SALIR
         MOV R4, #28           // Establecer el contador de bucle a 12
         LDR R5, =array_pingpong  // Cargar la dirección base de la secuencia en R5
         

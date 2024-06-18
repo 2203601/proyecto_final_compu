@@ -16,13 +16,13 @@ void* cowboy(void* arg);
 int menu(void);
 void password(void);
 
-#define QUIT_KEY 'q'
+#define SALIR_KEY 'q'
 #define DELAY_INTERVAL 250
 #define DEFAULT_DELAY 1000
 #define KEY_UP 'u'
 #define KEY_DOWN 'd'
 
-unsigned int QUIT;
+unsigned int SALIR;
 size_t DELAY;
 size_t DELAY_1 = DEFAULT_DELAY;
 size_t DELAY_2 = DEFAULT_DELAY;
@@ -62,11 +62,11 @@ int getch()
 
 void* KeyListener(void* arg)
 {
-    while (!QUIT)
+    while (!SALIR)
     {
         int key = getch();
-        if (key == QUIT_KEY)
-            QUIT = 1;
+        if (key == SALIR_KEY)
+            SALIR = 1;
         else if (key == KEY_UP)
         {
             if (DELAY - DELAY_INTERVAL != 0)
@@ -182,7 +182,7 @@ int menu(void) {
         disp_binary(0);
         printf("\033[H\033[J"); // Limpia la pantalla de la terminal
         printf("\033[?25h");
-        QUIT = 0;
+        SALIR = 0;
         DELAY = DEFAULT_DELAY;
         printf("MENU\n");
         printf("1) Autof\n");
@@ -201,10 +201,10 @@ void* choquef(void* arg) {
     printf("\033[H\033[J"); // Limpia la pantalla de la terminal
     printf("Mostrando choque:\n");
 
-    while (!QUIT) {
+    while (!SALIR) {
         unsigned char tabla[8] = { 0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0x81 };
         for (int i = 0; i < 8; i++) {
-            if (QUIT) break;
+            if (SALIR) break;
             disp_binary(tabla[i]); // solo muestra en pantalla
             leds(~tabla[i]);  // Descomenta esto si usas EasyPIO
             Delay(DELAY);
@@ -220,16 +220,16 @@ void* cowboy(void* arg) {
     unsigned char vaqueros[5] = { 0x18, 0x24, 0x42, 0x81, 0x82 }; // caminata de los vaqueros
     unsigned char disparo[6] = { 0x86, 0x8A, 0x92, 0xA2, 0xC2, 0x02 }; // disparo
 
-    while(!QUIT){
+    while(!SALIR){
             for (int j = 0; j < 5; j++) { // for para la caminata 
-                if (QUIT) break;
+                if (SALIR) break;
                 disp_binary(vaqueros[j]); // solo muestra en pantalla
                 leds(~vaqueros[j]);  // Descomenta esto si usas EasyPIO
                     Delay(DELAY);
             }
 
             for (int i = 0; i < 6; i++) { // for para el disparo
-                if (QUIT) break;
+                if (SALIR) break;
                 disp_binary(disparo[i]); // solo muestra en pantalla
                 leds(~disparo[i]);  // Descomenta esto si usas EasyPIO
                 delayMillis(100);
@@ -237,7 +237,7 @@ void* cowboy(void* arg) {
 
 
                 if (i == 4) { // si el array del disparo llega al penultimo bit
-                    if (QUIT) break;
+                    if (SALIR) break;
                     disp_binary(disparo[i + 1]); // solo muestra en pantalla
                     leds(~disparo[i + 1]);  // Descomenta esto si usas EasyPIO
                     Delay(DELAY);

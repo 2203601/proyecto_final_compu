@@ -4,8 +4,8 @@
 
 .text
 
-.global autof
-.global QUIT
+.global autof 
+.global SALIR
 .global DELAY
 .global DELAY_1
 .global Delay
@@ -16,7 +16,7 @@ autof:
         LDR R6, [R11]
         LDR R9, =DELAY
         STR R6, [R9]
-        LDR R10, = QUIT
+        LDR R10, = SALIR
         MOV R4, #32
         LDR R5, =array // load base address of array into R5
         
