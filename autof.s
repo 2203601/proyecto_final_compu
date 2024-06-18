@@ -5,22 +5,41 @@
 .text
 
 .global autof
+.global QUIT
+.global DELAY
+.global DELAY_1
+.global Delay
 
 autof:
-        PUSH {R4, R5, R6, LR}
+        PUSH {R4, R5, R6, R7, R9, R10, R11, LR}
+        LDR R11, = DELAY_1
+        LDR R6, [R11]
+        LDR R9, =DELAY
+        STR R6, [R9]
+        LDR R10, = QUIT
         MOV R4, #16
         LDR R5, =array // load base address of array into R5
         
 loop:   LDRB R6, [R5], #1
+        LDR R7, [R10]
+        CMP R7, #1
+        BEQ break
+        
         MOV R0, R6
         BL disp_binary 
         MVN R0, R6 // interface outputs are active by low
         BL leds
-        MOV R0, #100
-        BL delayMillis
+        LDR R6, [R9]
+        MOV R0, R6
+        BL Delay
         SUBS R4, R4, #1
         BNE loop 
-        POP {R4, R5, R6, PC} // return from autof
+        
+break:
+      STR R6, [R11]
+      MOV R0, #0
+      STR R0, [R10]  
+        POP {R4, R5, R6, R7, R9, R10, R11,  PC} // return from autof
 
 .data
 
